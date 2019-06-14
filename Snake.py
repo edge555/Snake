@@ -1,9 +1,6 @@
 import pygame, random, os
 from pygame import font
 
-pygame.init()
-pygame.mixer.init()
-
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 RED = (255,0,0)
@@ -11,32 +8,15 @@ ORANGE = (255,165,0)
 DARK_CYAN = (0,204,204)
 GREEN=(0,255,0)
 
-width = 600
-height = 600
-window = pygame.display.set_mode((width,height))
-
-pygame.display.set_caption("Snake")
-
-clock = pygame.time.Clock()
-font = pygame.font.Font('freesansbold.ttf',18)
-
-def gethighscore():
-    with open("HighScore.txt","r") as f:
-        p=int(f.read())
-    return p
-
-def show_text(text,color, x, y):
-    text = font.render(text,True,color)
-    window.blit(text,(x,y))
-
-def draw_snake(window,color, snake , size):
-    for x,y in snake[:-1]:
-        pygame.draw.rect(window,WHITE,[x, y, size, size])
-    for x,y in reversed(snake):
-        pygame.draw.rect(window,GREEN,[x, y, size, size])
-        break;
-
 def run():
+    pygame.init()
+    pygame.mixer.init()
+    width = 600
+    height = 600
+    window = pygame.display.set_mode((width,height))
+    pygame.display.set_caption("Snake")
+
+    clock = pygame.time.Clock()
     cur_x = random.randint(30,width-30)
     cur_y = random.randint(30,height-30)
     food_x = 0
@@ -46,6 +26,7 @@ def run():
         food_y = random.randint(30,height-30)
         if food_x != cur_x and food_y != cur_y:
             break
+
     snake_width = 15
     velo_x = 0
     velo_y = 0
@@ -67,14 +48,14 @@ def run():
     while not exit:
         if over:
             window.fill(BLACK)
-            show_text("Game Over!!!",ORANGE,200,100)
+            show_text(window,"Game Over!!!",ORANGE,200,100)
             if newscore_ishigh:
-                show_text("New High Score!!!",ORANGE,200,200)
-                show_text("Your score :: "+str(score),ORANGE,200,300)
+                show_text(window,"New High Score!!!",ORANGE,200,200)
+                show_text(window,"Your score :: "+str(score),ORANGE,200,300)
             else:
-                show_text("Highscore :: "+str(highscore),ORANGE,200,200)
-                show_text("Your score :: "+str(score),ORANGE,200,300)
-            show_text("Press enter to play again",ORANGE,200,400)
+                show_text(window,"Highscore :: "+str(highscore),ORANGE,200,200)
+                show_text(window,"Your score :: "+str(score),ORANGE,200,300)
+            show_text(window,"Press enter to play again",ORANGE,200,400)
             highscore = max(score,highscore)
             with open("HighScore.txt","w") as f:
                 f.write(str(highscore))
@@ -131,7 +112,7 @@ def run():
                 pygame.mixer.music.play()
 
             window.fill(BLACK)
-            show_text("Score :: "+str(score),DARK_CYAN,480,12)
+            show_text(window,"Score :: "+str(score),DARK_CYAN,480,12)
             pygame.draw.rect(window,RED,[food_x, food_y, snake_width, snake_width])
 
             head=[]
@@ -152,6 +133,23 @@ def run():
 
         pygame.display.update()
         clock.tick(fps)
-    pygame.quit()
+
+def draw_snake(window,color, snake , size):
+    for x,y in snake[:-1]:
+        pygame.draw.rect(window,WHITE,[x, y, size, size])
+    for x,y in reversed(snake):
+        pygame.draw.rect(window,GREEN,[x, y, size, size])
+        break
+
+def gethighscore():
+    with open("HighScore.txt","r") as f:
+        p=int(f.read())
+    return p
+
+def show_text(window,text,color, x, y):
+    myfont = pygame.font.Font('freesansbold.ttf',18)
+    text = myfont.render(text,True,color)
+    window.blit(text,(x,y))
 
 run()
+exit(0)
