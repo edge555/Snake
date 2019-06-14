@@ -29,16 +29,24 @@ pygame.display.update()
 exit = False
 over = False
 
+snake=[]
+snake_len = 1
+
 clock = pygame.time.Clock()
 font = pygame.font.Font('freesansbold.ttf',18)
 
 def show_score(text,color):
     text = font.render(text,True,color)
     window.blit(text,(480,25))
+
+def draw_snake(window,color, snake , size):
+    for x,y in snake:
+        pygame.draw.rect(window,WHITE,[x, y, size, size])
+
 while not exit:
 
     for event in pygame.event.get():
-        print(event)
+        #print(event)
         if event.type == pygame.QUIT:
             exit = True
         if event.type == pygame.KEYDOWN:
@@ -60,15 +68,24 @@ while not exit:
 
     if abs(cur_x-food_x)<10 and abs(cur_y-food_y)<10:
         score += 1
+        snake_len += 3
         food_x = random.randint(50,width-50)
         food_y = random.randint(50,height-50)
 
     window.fill(BLACK)
     show_score("Score :: "+str(score),GREEN)
+
+    head=[]
+    head.append(cur_x)
+    head.append(cur_y)
+    snake.append(head)
+
+    if len(snake)>snake_len:
+        del(snake[0])
+
     pygame.draw.rect(window,RED,[food_x, food_y, snake_width, snake_width])
-    pygame.draw.rect(window,WHITE,[cur_x, cur_y, snake_width, snake_width])
+    draw_snake(window,WHITE ,snake, snake_width)
     pygame.display.update()
     clock.tick(fps)
 
 pygame.quit()
-
