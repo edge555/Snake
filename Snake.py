@@ -14,7 +14,6 @@ height = 600
 window = pygame.display.set_mode((width,height))
 
 pygame.display.set_caption("Snake")
-pygame.display.update()
 
 clock = pygame.time.Clock()
 font = pygame.font.Font('freesansbold.ttf',18)
@@ -102,6 +101,9 @@ def run():
                 snake_len += 3
                 food_x = random.randint(50,width-50)
                 food_y = random.randint(50,height-50)
+                pygame.mixer.music.load('Eating.mp3')
+                pygame.mixer.music.play()
+
 
             window.fill(BLACK)
             show_text("Score :: "+str(score),GREEN,480,25)
