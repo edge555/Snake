@@ -2,7 +2,7 @@ import pygame, random, os
 from pygame import font
 
 pygame.init()
-
+pygame.mixer.init()
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 RED = (255,0,0)
@@ -33,6 +33,7 @@ def draw_snake(window,color, snake , size):
         pygame.draw.rect(window,WHITE,[x, y, size, size])
 
 def run():
+
     cur_x = random.randint(50,width-50)
     cur_y = random.randint(50,height-50)
     food_x = random.randint(50,width-50)
@@ -58,15 +59,20 @@ def run():
             with open("HighScore.txt","w") as f:
                 f.write(str(highscore))
             window.fill(BLACK)
-            show_text("Highscore :: "+str(highscore),ORANGE,200,100)
-            show_text("Game Over!",ORANGE,200,200)
-            show_text("Press enter to play again",ORANGE,200,300)
+            show_text("Game Over!!!",ORANGE,200,100)
+            if(score == highscore):
+                show_text("New High Score!!!",ORANGE,200,200)
+                show_text("Your score :: "+str(score),ORANGE,200,300)
+            else:
+                show_text("Highscore :: "+str(highscore),ORANGE,200,200)
+                show_text("Your score :: "+str(score),ORANGE,200,300)
+            show_text("Press enter to play again",ORANGE,200,400)
             for event in pygame.event.get():
-                #print(event)
                 if event.type == pygame.QUIT:
                     exit = True
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
+                        pygame.mixer.music.stop()
                         run()
         else:
             for event in pygame.event.get():
@@ -109,6 +115,8 @@ def run():
 
             if cur_x<0 or cur_x>width or cur_y<0 or cur_y>height or head in snake[:-1]:
                 over = True
+                pygame.mixer.music.load('Gameover.mp3')
+                pygame.mixer.music.play()
                 highscore = max(score,highscore)
             draw_snake(window,WHITE ,snake, snake_width)
 
