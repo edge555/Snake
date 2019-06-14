@@ -103,6 +103,15 @@ def run():
             cur_x += velo_x
             cur_y += velo_y
 
+            if cur_x<0:
+                cur_x = width
+            if cur_x>width:
+                cur_x=0
+            if cur_y<0:
+                cur_y = height
+            if cur_y>height:
+                cur_y=0
+
             if abs(cur_x-food_x)<10 and abs(cur_y-food_y)<10:
                 score += 1
                 snake_len += 3
@@ -123,7 +132,7 @@ def run():
             if len(snake)>snake_len:
                 del(snake[0])
 
-            if cur_x<0 or cur_x>width or cur_y<0 or cur_y>height or head in snake[:-1]:
+            if head in snake[:-1]:
                 over = True
                 pygame.mixer.music.load('Gameover.mp3')
                 pygame.mixer.music.play()
