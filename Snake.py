@@ -37,10 +37,15 @@ def draw_snake(window,color, snake , size):
         break;
 
 def run():
-    cur_x = random.randint(50,width-50)
-    cur_y = random.randint(50,height-50)
-    food_x = random.randint(50,width-50)
-    food_y = random.randint(50,height-50)
+    cur_x = random.randint(30,width-30)
+    cur_y = random.randint(30,height-30)
+    food_x = 0
+    food_y = 0
+    while True:
+        food_x = random.randint(30,width-30)
+        food_y = random.randint(30,height-30)
+        if food_x != cur_x and food_y != cur_y:
+            break
     snake_width = 15
     velo_x = 0
     velo_y = 0
@@ -50,7 +55,6 @@ def run():
 
     snake_len = 1
     snake=[]
-
 
     if (not os.path.exists("HighScore.txt")):
         with open("HighScore.txt","w") as f:
@@ -115,13 +119,19 @@ def run():
             if abs(cur_x-food_x)<10 and abs(cur_y-food_y)<10:
                 score += 1
                 snake_len += 3
-                food_x = random.randint(50,width-50)
-                food_y = random.randint(50,height-50)
+                while True:
+                    food_x = random.randint(30,width-30)
+                    food_y = random.randint(30,height-30)
+                    food=[]
+                    food.append(food_x)
+                    food.append(food_y)
+                    if not food in snake:
+                        break
                 pygame.mixer.music.load('Eating.mp3')
                 pygame.mixer.music.play()
 
             window.fill(BLACK)
-            show_text("Score :: "+str(score),DARK_CYAN,480,25)
+            show_text("Score :: "+str(score),DARK_CYAN,480,12)
             pygame.draw.rect(window,RED,[food_x, food_y, snake_width, snake_width])
 
             head=[]
