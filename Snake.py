@@ -1,10 +1,12 @@
 import pygame, random
+from pygame import font
 
 pygame.init()
 
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 RED = (255,0,0)
+GREEN=(0,255,0)
 
 width = 600
 height = 600
@@ -16,7 +18,7 @@ cur_y = random.randint(50,height-50)
 food_x = random.randint(50,width-50)
 food_y = random.randint(50,height-50)
 
-snake_width = 10
+snake_width = 15
 velo_x = 0
 velo_y = 0
 fps = 30
@@ -28,11 +30,15 @@ exit = False
 over = False
 
 clock = pygame.time.Clock()
+font = pygame.font.Font('freesansbold.ttf',18)
 
+def show_score(text,color):
+    text = font.render(text,True,color)
+    window.blit(text,(480,25))
 while not exit:
 
     for event in pygame.event.get():
-        #print(event)
+        print(event)
         if event.type == pygame.QUIT:
             exit = True
         if event.type == pygame.KEYDOWN:
@@ -58,6 +64,7 @@ while not exit:
         food_y = random.randint(50,height-50)
 
     window.fill(BLACK)
+    show_score("Score :: "+str(score),GREEN)
     pygame.draw.rect(window,RED,[food_x, food_y, snake_width, snake_width])
     pygame.draw.rect(window,WHITE,[cur_x, cur_y, snake_width, snake_width])
     pygame.display.update()
