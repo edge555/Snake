@@ -97,7 +97,7 @@ def run():
             if cur_y>height:
                 cur_y=0
 
-            if abs(cur_x-food_x)<10 and abs(cur_y-food_y)<10:
+            if abs(cur_x+10-food_x)<10 and abs(cur_y+10-food_y)<10:
                 score += 1
                 snake_len += 3
                 while True:
@@ -113,7 +113,7 @@ def run():
 
             window.fill(BLACK)
             show_text(window,"Score :: "+str(score),DARK_CYAN,480,12)
-            pygame.draw.rect(window,RED,[food_x, food_y, snake_width, snake_width])
+            pygame.draw.circle(window,RED,(food_x, food_y), 10)
 
             head=[]
             head.append(cur_x)
