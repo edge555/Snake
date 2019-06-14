@@ -48,14 +48,14 @@ def run():
     while not exit:
         if over:
             window.fill(BLACK)
-            show_text(window,"Game Over!!!",ORANGE,200,100)
+            show_text(window,"Game Over!!!",ORANGE,245,100)
             if newscore_ishigh:
-                show_text(window,"New High Score!!!",ORANGE,200,200)
-                show_text(window,"Your score :: "+str(score),ORANGE,200,300)
+                show_text(window,"New High Score!!!",ORANGE,230,200)
+                show_text(window,"Your score :: "+str(score),ORANGE,239,300)
             else:
-                show_text(window,"Highscore :: "+str(highscore),ORANGE,200,200)
-                show_text(window,"Your score :: "+str(score),ORANGE,200,300)
-            show_text(window,"Press enter to play again",ORANGE,200,400)
+                show_text(window,"Highscore :: "+str(highscore),ORANGE,241,200)
+                show_text(window,"Your score :: "+str(score),ORANGE,239,300)
+            show_text(window,"Press enter to play again",ORANGE,193,400)
             highscore = max(score,highscore)
             with open("HighScore.txt","w") as f:
                 f.write(str(highscore))
