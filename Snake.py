@@ -1,4 +1,4 @@
-import pygame, random
+import pygame, random, os
 from pygame import font
 
 pygame.init()
@@ -18,6 +18,11 @@ pygame.display.update()
 clock = pygame.time.Clock()
 font = pygame.font.Font('freesansbold.ttf',18)
 
+def gethighscore():
+    with open("HighScore.txt","r") as f:
+        p=int(f.read())
+    return p
+
 def show_text(text,color, x, y):
     text = font.render(text,True,color)
     window.blit(text,(x,y))
@@ -25,8 +30,8 @@ def show_text(text,color, x, y):
 def draw_snake(window,color, snake , size):
     for x,y in snake:
         pygame.draw.rect(window,WHITE,[x, y, size, size])
-def run():
 
+def run():
     cur_x = random.randint(50,width-50)
     cur_y = random.randint(50,height-50)
     food_x = random.randint(50,width-50)
@@ -38,13 +43,23 @@ def run():
     score = 0
     snake_len = 1
     snake=[]
+
+    if (not os.path.exists("HighScore.txt")):
+        with open("HighScore.txt","w") as f:
+            f.write("0")
+
+    highscore = gethighscore()
     exit = False
     over = False
 
     while not exit:
         if over:
+            with open("HighScore.txt","w") as f:
+                f.write(str(highscore))
             window.fill(BLACK)
+            show_text("Highscore :: "+str(highscore),RED,200,100)
             show_text("Game Over!",RED,200,200)
+            show_text("Press enter to play again",RED,200,300)
             for event in pygame.event.get():
                 #print(event)
                 if event.type == pygame.QUIT:
@@ -91,13 +106,12 @@ def run():
             if len(snake)>snake_len:
                 del(snake[0])
 
-            if cur_x<0 or cur_x>width or cur_y<0 or cur_y>height:
+            if cur_x<0 or cur_x>width or cur_y<0 or cur_y>height or head in snake[:-1]:
                 over = True
+                highscore = max(score,highscore)
             draw_snake(window,WHITE ,snake, snake_width)
-
         pygame.display.update()
         clock.tick(fps)
-
     pygame.quit()
 
 run()
