@@ -33,7 +33,6 @@ def draw_snake(window,color, snake , size):
         pygame.draw.rect(window,WHITE,[x, y, size, size])
 
 def run():
-
     cur_x = random.randint(50,width-50)
     cur_y = random.randint(50,height-50)
     food_x = random.randint(50,width-50)
@@ -45,6 +44,7 @@ def run():
     score = 0
     snake_len = 1
     snake=[]
+    new_score_ishigh = False
 
     if (not os.path.exists("HighScore.txt")):
         with open("HighScore.txt","w") as f:
@@ -56,17 +56,19 @@ def run():
 
     while not exit:
         if over:
-            with open("HighScore.txt","w") as f:
-                f.write(str(highscore))
             window.fill(BLACK)
             show_text("Game Over!!!",ORANGE,200,100)
-            if(score == highscore):
+            if new_score_ishigh:
                 show_text("New High Score!!!",ORANGE,200,200)
                 show_text("Your score :: "+str(score),ORANGE,200,300)
             else:
                 show_text("Highscore :: "+str(highscore),ORANGE,200,200)
                 show_text("Your score :: "+str(score),ORANGE,200,300)
             show_text("Press enter to play again",ORANGE,200,400)
+            highscore = max(score,highscore)
+            with open("HighScore.txt","w") as f:
+                f.write(str(highscore))
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit = True
@@ -117,7 +119,8 @@ def run():
                 over = True
                 pygame.mixer.music.load('Gameover.mp3')
                 pygame.mixer.music.play()
-                highscore = max(score,highscore)
+                if(score>highscore):
+                    new_score_ishigh = True
             draw_snake(window,WHITE ,snake, snake_width)
 
         pygame.display.update()
