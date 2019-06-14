@@ -6,6 +6,7 @@ pygame.init()
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 RED = (255,0,0)
+ORANGE = (255,165,0)
 GREEN=(0,255,0)
 
 width = 600
@@ -57,9 +58,9 @@ def run():
             with open("HighScore.txt","w") as f:
                 f.write(str(highscore))
             window.fill(BLACK)
-            show_text("Highscore :: "+str(highscore),RED,200,100)
-            show_text("Game Over!",RED,200,200)
-            show_text("Press enter to play again",RED,200,300)
+            show_text("Highscore :: "+str(highscore),ORANGE,200,100)
+            show_text("Game Over!",ORANGE,200,200)
+            show_text("Press enter to play again",ORANGE,200,300)
             for event in pygame.event.get():
                 #print(event)
                 if event.type == pygame.QUIT:
@@ -110,6 +111,7 @@ def run():
                 over = True
                 highscore = max(score,highscore)
             draw_snake(window,WHITE ,snake, snake_width)
+
         pygame.display.update()
         clock.tick(fps)
     pygame.quit()
