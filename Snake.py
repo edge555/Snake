@@ -7,6 +7,7 @@ RED = (255,0,0)
 ORANGE = (255,165,0)
 DARK_CYAN = (0,204,204)
 GREEN=(0,255,0)
+GOLD = (255,215,0)
 
 def run():
     pygame.init()
@@ -34,6 +35,7 @@ def run():
     fps = 30
     score = 0
     now = 1
+    bigfood_count = 0
     newscore_ishigh = False
 
     snake_len = 1
@@ -100,11 +102,26 @@ def run():
                 cur_y = height
             if cur_y>height:
                 cur_y=0
+            collide = False
+            rad = 10
+            bigfood = False
+            food_color = RED
+            if bigfood_count%5==0 and bigfood_count:
+                bigfood= True
+                rad = 20
+                food_color = GOLD
+            if abs(cur_x+rad-food_x)<rad and abs(cur_y+rad-food_y)<rad:
+                collide = True
 
-            if abs(cur_x+10-food_x)<10 and abs(cur_y+10-food_y)<10:
-                score += 1
+            if collide:
+                if bigfood:
+                    score += 5
+                    bigfood_count = -1
+                else:
+                    score += 1
                 now += 1
                 snake_len += 3
+                bigfood_count += 1
                 while True:
                     food_x = random.randint(30,width-30)
                     food_y = random.randint(30,height-30)
@@ -118,7 +135,7 @@ def run():
 
             window.fill(BLACK)
             show_text(window,"Score :: "+str(score),DARK_CYAN,480,12)
-            pygame.draw.circle(window,RED,(food_x, food_y), 10)
+            pygame.draw.circle(window,food_color,(food_x, food_y), rad)
 
             head=[]
             head.append(cur_x)
