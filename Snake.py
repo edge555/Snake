@@ -21,6 +21,7 @@ def run():
     cur_y = random.randint(30,height-30)
     food_x = 0
     food_y = 0
+
     while True:
         food_x = random.randint(30,width-30)
         food_y = random.randint(30,height-30)
@@ -32,6 +33,7 @@ def run():
     velo_y = 0
     fps = 30
     score = 0
+    now = 1
     newscore_ishigh = False
 
     snake_len = 1
@@ -63,6 +65,7 @@ def run():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit = True
+                    break
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
                         pygame.mixer.music.stop()
@@ -71,6 +74,7 @@ def run():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit = True
+                    break
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RIGHT:
                         velo_x += 5
@@ -99,6 +103,7 @@ def run():
 
             if abs(cur_x+10-food_x)<10 and abs(cur_y+10-food_y)<10:
                 score += 1
+                now += 1
                 snake_len += 3
                 while True:
                     food_x = random.randint(30,width-30)
@@ -130,7 +135,10 @@ def run():
                 if(score>highscore):
                     newscore_ishigh = True
             draw_snake(window,WHITE ,snake, snake_width)
-
+        now %= 11
+        if not now:
+            fps += 3
+            now = 1
         pygame.display.update()
         clock.tick(fps)
 
